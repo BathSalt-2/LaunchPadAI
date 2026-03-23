@@ -61,7 +61,7 @@ export default function App() {
     productName: '',
     productDescription: '',
     targetAudience: '',
-    budget: '1000',
+    budget: '0',
     url: '',
     language: 'English'
   });
@@ -158,7 +158,7 @@ export default function App() {
       addLog('strategist', `Analyzing ${currentProject.productName} and market landscape...`);
       const strategistResponse = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: `Product: ${currentProject.productName}\nDescription: ${currentProject.productDescription}\nAudience: ${currentProject.targetAudience}\nBudget: ${currentProject.budget}\nLanguage: ${currentProject.language}\n\nCreate a launch strategy and find 3 top competitors using search.`,
+        contents: `Product: ${currentProject.productName}\nDescription: ${currentProject.productDescription}\nAudience: ${currentProject.targetAudience}\nMarketing Budget: $0 (Strict Organic Focus)\nLanguage: ${currentProject.language}\n\nCreate a zero-budget launch strategy and find 3 top competitors using search.`,
         config: { 
           systemInstruction: AGENTS[0].systemInstruction,
           tools: [{ googleSearch: {} }]
@@ -190,7 +190,7 @@ export default function App() {
       try {
         const imageResponse = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
-          contents: { parts: [{ text: `A professional, modern social media advertisement for ${currentProject.productName}. High quality, clean design, tech aesthetic.` }] },
+          contents: { parts: [{ text: `A professional, modern organic social media post for ${currentProject.productName}. High quality, clean design, tech aesthetic, designed for viral reach on X/LinkedIn.` }] },
           config: { imageConfig: { aspectRatio: "1:1" } }
         });
         const imagePart = imageResponse.candidates?.[0]?.content?.parts.find(p => p.inlineData);
@@ -204,7 +204,7 @@ export default function App() {
       addLog('analyst', "Calculating channel ROI and influencer matchmaking...");
       const mediaResponse = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: `Strategy: ${strategy}\nBudget: ${currentProject.budget}\n\n1. Recommend channels.\n2. Find 5 specific influencer niches or types using search.`,
+        contents: `Strategy: ${strategy}\nMarketing Budget: $0\n\n1. Recommend organic channels (Reddit, X, etc.).\n2. Find 5 specific influencer niches or types using search for organic collaboration.`,
         config: { 
           systemInstruction: AGENTS[2].systemInstruction,
           tools: [{ googleSearch: {} }]
@@ -354,8 +354,8 @@ export default function App() {
                 transition={{ delay: 0.2 }}
                 className="text-6xl sm:text-9xl font-black tracking-tighter text-white leading-[0.85] uppercase"
               >
-                Launch <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Faster</span> <br />
-                Scale <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">Smarter</span>
+                Launch <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Free</span> <br />
+                Scale <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">Organic</span>
               </motion.h1>
               <motion.p 
                 initial={{ y: 20, opacity: 0 }}
@@ -363,8 +363,8 @@ export default function App() {
                 transition={{ delay: 0.4 }}
                 className="text-xl sm:text-3xl text-white/60 font-medium max-w-3xl mx-auto tracking-tight"
               >
-                The world's first fully autonomous AI marketing agency. 
-                From zero to your first 100 customers in minutes.
+                The world's first $0 budget AI marketing agency. 
+                Get your first 100 customers with zero ad spend.
               </motion.p>
             </div>
 
@@ -454,11 +454,11 @@ export default function App() {
             <div className="space-y-4 text-center">
               <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
                 The First 100 Customers. <br />
-                <span className="text-blue-500">Fully Autonomous.</span>
+                <span className="text-blue-500">$0 Ad Spend.</span>
               </h2>
               <p className="text-base sm:text-lg text-white/60">
-                Input your product details or a URL. Our multi-agent AI agency will coordinate, 
-                strategize, and build your entire launch engine.
+                Input your product details or a URL. Our multi-agent AI agency will build 
+                a high-impact organic growth engine for you.
               </p>
             </div>
 
@@ -634,8 +634,8 @@ export default function App() {
                     <span className="text-sm font-bold truncate max-w-[150px]">{project.productName || 'Analyzing...'}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-white/60">Budget</span>
-                    <span className="text-sm font-bold text-green-400">${project.budget}</span>
+                    <span className="text-sm text-white/60">Ad Spend</span>
+                    <span className="text-sm font-bold text-green-400">$0 (Organic)</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-white/60">Language</span>
@@ -869,7 +869,7 @@ export default function App() {
                 <div className="bg-blue-600/10 border border-blue-500/20 rounded-2xl p-6">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-blue-400 mb-4">Agent Advice</h4>
                   <p className="text-sm text-white/80 leading-relaxed italic">
-                    "Astra recommends focusing 60% of your initial budget on the TikTok influencer campaign to build social proof before scaling Meta ads."
+                    "Astra recommends focusing 100% of your energy on high-leverage organic communities like Reddit and X to build social proof before launching on Product Hunt."
                   </p>
                 </div>
 
@@ -891,7 +891,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 text-white/20 text-sm font-mono">
             <TerminalIcon className="w-4 h-4" />
-            <span>&copy; 2026 LAUNCHPAD AI AGENCY // ALL AGENTS AUTONOMOUS</span>
+            <span>&copy; 2026 LAUNCHPAD $0 BUDGET AGENCY // ALL AGENTS AUTONOMOUS</span>
           </div>
           <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-white/40">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
