@@ -1,0 +1,72 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: businesses
+    // Document ID: {businessId}
+    // Fields:
+    //   - id: string (required) - Unique ID
+    //   - userId: string (required) - Owner UID
+    //   - project: map (required) - Project input state
+    //   - kit: map (required) - Generated assets
+    //   - createdAt: string (required) - ISO date
+    //   - updatedAt: string (required) - ISO date
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - role: string (required) - 'admin' or 'user'
+    //   - email: string (required) - User email
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "declanmcrory@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidBusiness(data) {
+      return data.keys().hasAll(['id', 'userId', 'project', 'kit', 'createdAt', 'updatedAt']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.userId is string && data.userId.size() > 0 &&
+             data.project is map &&
+             data.kit is map &&
+             data.createdAt is string &&
+             data.updatedAt is string;
+    }
+
+    match /businesses/{businessId} {
+      allow read: if isAuthenticated() && (isOwner(resource.data.userId) || isAdmin());
+      allow create: if isAuthenticated() && 
+                      isValidBusiness(request.resource.data) && 
+                      isOwner(request.resource.data.userId);
+      allow update: if isAuthenticated() && 
+                      isValidBusiness(request.resource.data) && 
+                      isOwner(resource.data.userId) && 
+                      request.resource.data.userId == resource.data.userId;
+      allow delete: if isAuthenticated() && (isOwner(resource.data.userId) || isAdmin());
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow create: if isAuthenticated() && isOwner(userId) && request.resource.data.role == 'user';
+      allow update: if isAuthenticated() && (isAdmin() || (isOwner(userId) && request.resource.data.role == resource.data.role));
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Business": {
+      "title": "Business",
+      "description": "A saved business project including its generated kit.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the business." },
+        "userId": { "type": "string", "description": "The UID of the user who owns this business." },
+        "project": { "type": "object", "description": "The project input state." },
+        "kit": { "type": "object", "description": "The generated business kit assets." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the business was first saved." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the business was last updated." }
+      },
+      "required": ["id", "userId", "project", "kit", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/businesses/{businessId}": {
+      "schema": "Business",
+      "description": "Collection of saved businesses."
+    }
+  }
+}

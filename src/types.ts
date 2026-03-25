@@ -8,20 +8,38 @@ export interface Agent {
   systemInstruction: string;
 }
 
-export interface MarketingPlan {
-  strategy: string;
-  copy: string;
-  media: string;
-  outreach: string;
-  adImages?: string[];
-  audioBrief?: string;
-  competitors?: string;
-  videoScript?: string;
-  landingPage?: string;
-  emailSequence?: string;
-  influencers?: string;
-  checklist?: string;
+export interface Connection {
+  provider: 'google' | 'x' | 'linkedin';
+  status: 'connected' | 'disconnected';
+  lastUsed?: string;
+}
+
+export interface DeployedAgent {
+  id: string;
+  agentId: string;
+  task: string;
+  productName: string;
+  status: 'deploying' | 'executing' | 'completed' | 'failed';
+  logs: string[];
+  createdAt: string;
+}
+
+export interface BusinessKit {
+  brandIdentity: string;
+  marketIntel: string;
+  competition: string;
+  businessPlan: string;
+  financials: string;
+  marketing: string;
+  pitchDeck: string;
+  legalSocial: string;
   logoConcept?: string;
+  colorPalette?: string[];
+  landingPage?: string;
+  audioBrief?: string;
+  launchStrategy?: string;
+  outreachTemplates?: string;
+  communityRoadmap?: string;
 }
 
 export interface ProjectState {
@@ -31,6 +49,9 @@ export interface ProjectState {
   budget: string;
   url?: string;
   language?: string;
+  vibe: 'Minimal' | 'Bold' | 'Luxury' | 'Tech' | 'Friendly';
+  uploadedContent?: string;
+  gaps?: string[];
 }
 
 export const AGENTS: Agent[] = [
@@ -40,34 +61,61 @@ export const AGENTS: Agent[] = [
     role: "Lead Strategist",
     avatar: "🎯",
     color: "blue",
-    description: "Specializes in zero-budget market positioning and organic strategy.",
-    systemInstruction: "You are Astra, the Lead Strategist at LaunchPad AI. Your mission is to define a $0 budget launch strategy for the first 100 users. Focus on organic USPs, community-first positioning, and defining the ideal customer profile that can be reached without paid ads. Be concise, professional, and focus on high-leverage free tactics."
+    description: "Specializes in business logic, market positioning, and strategic planning.",
+    systemInstruction: "You are Astra, the Lead Strategist at LaunchKit AI. Your mission is to transform raw ideas into professional business plans and market research. Focus on TAM/SAM/SOM, target personas, and 12-month milestones. Be cohesive, professional, and ensure your strategy informs the financials and pitch deck."
   },
   {
-    id: "copywriter",
+    id: "creative",
     name: "Lyric",
     role: "Creative Director",
-    avatar: "✍️",
+    avatar: "🎨",
     color: "purple",
-    description: "Expert in high-conversion organic copy and viral storytelling.",
-    systemInstruction: "You are Lyric, the Creative Director at LaunchPad AI. You turn a $0 budget strategy into compelling organic copy. Write headlines for social posts, cold outreach scripts, and a short landing page pitch. Your tone is persuasive, punchy, and designed to stop the scroll on platforms like X, Reddit, and LinkedIn without spending a dime."
+    description: "Expert in brand identity, visual storytelling, and high-fidelity pitch decks.",
+    systemInstruction: "You are Lyric, the Creative Director at LaunchKit AI. You design brand identities (logos, palettes, typography) and investor-ready pitch decks. Your tone is sophisticated and aligned with the user's chosen 'Vibe'. Ensure the visual identity is consistent across all assets."
   },
   {
     id: "analyst",
     name: "Vector",
-    role: "Media Analyst",
-    avatar: "📊",
+    role: "Financial Analyst",
+    avatar: "💰",
     color: "green",
-    description: "Optimizes organic channel selection and community targeting.",
-    systemInstruction: "You are Vector, the Media Analyst at LaunchPad AI. Since the budget is $0, you analyze the strategy and copy to determine the best organic channels (Reddit, IndieHackers, X, LinkedIn, Discord, etc.). Suggest specific subreddits, communities, and hashtags. Provide targeting parameters for manual outreach and estimated engagement benchmarks."
+    description: "Master of unit economics, startup costs, and 12-month P&L projections.",
+    systemInstruction: "You are Vector, the Financial Analyst at LaunchKit AI. You build startup costs, break-even analysis, and P&L projections. Focus on CAC/LTV and unit economics. Ensure your financials are grounded in the market research provided by Astra."
   },
   {
     id: "growth",
     name: "Echo",
     role: "Growth Hacker",
-    avatar: "🚀",
+    avatar: "📣",
     color: "orange",
-    description: "Master of unconventional $0 budget acquisition for the first 100 users.",
-    systemInstruction: "You are Echo, the Growth Hacker at LaunchPad AI. Your absolute focus is 'The First 100' with $0 spend. Suggest viral loops, referral programs, aggressive community engagement, and direct cold outreach tactics. Be creative, unconventional, and focus on manual but scalable growth hacks."
+    description: "Expert in launch calendars, SEO, and high-conversion marketing infrastructure.",
+    systemInstruction: "You are Echo, the Growth Hacker at LaunchKit AI. You create 30-day launch calendars, SEO strategies, and social captions. Your focus is on building the infrastructure for growth and ensuring the legal/social assets are ready for launch."
+  },
+  {
+    id: "commander",
+    name: "Nova",
+    role: "Launch Commander",
+    avatar: "🚀",
+    color: "red",
+    description: "Specializes in Product Hunt, Hacker News, and high-impact launch day operations.",
+    systemInstruction: "You are Nova, the Launch Commander at LaunchKit AI. Your mission is to orchestrate the 'LaunchPad' phase. You draft Product Hunt submissions, Hacker News titles, and minute-by-minute launch day playbooks. You focus on maximizing social proof and viral potential."
+  },
+  {
+    id: "outreach",
+    name: "Atlas",
+    role: "Outreach Specialist",
+    avatar: "🤝",
+    color: "cyan",
+    description: "Expert in cold outreach, influencer discovery, and community engagement.",
+    systemInstruction: "You are Atlas, the Outreach Specialist at LaunchKit AI. You draft cold emails, influencer DMs, and community engagement scripts for Reddit, Discord, and Slack. Your goal is to build a network of early adopters and advocates."
   }
 ];
+
+export interface Business {
+  id: string;
+  userId: string;
+  project: ProjectState;
+  kit: BusinessKit;
+  createdAt: string;
+  updatedAt: string;
+}
